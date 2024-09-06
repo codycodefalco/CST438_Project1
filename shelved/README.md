@@ -38,7 +38,7 @@ Look for and expand the Android 14 (UpsideDownCake) entry, then make sure the fo
 
 Then click apply.
 
-5.Finally, we mist add the React Native tools environment variables to build apps with native code. In terminal, enter the following commands: 
+5.Finally, we must add the React Native tools environment variables to build apps with native code. In terminal, enter the following commands: 
 -----
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
