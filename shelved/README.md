@@ -45,6 +45,27 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 -----
 After this, open up your emulator via Android Studio and you should be able to run the app!
-
 ||||||||||
+
+## Run the App on MacOS
+1.To run the app we need to launch an android emulator.
+
+2.Once the emulator is running, go to terminal and switch to the project's direcorty. From there go into the 'shelved' folder.
+
+3.Install any required dependncies with the following command: 
+---
+npm install 
+---
+(You only need to run this command once, unless dependencies are added or updated.)
+
+4.Launch the app using this command: 
+---
+npm run android
+---
+
+App should now be running on the emulator you launched in step 1.
+||||||||||
+
 ## Installing on Windows/Linux
+
+
