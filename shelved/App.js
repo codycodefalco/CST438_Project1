@@ -1,35 +1,60 @@
-// andriod 737955579318-q1re4v9dlp5tf7u9blh0vu1knmealk2c.apps.googleusercontent.com
-import * as React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import * as Google from 'expo-auth-session/providers/google';
+/**
+ * android 737955579318-q1re4v9dlp5tf7u9blh0vu1knmealk2c.apps.googleusercontent.com
+ * 737955579318-sv5t7ugc7qdarn71csel7gn7ust72osh.apps.googleusercontent.com
+ * Used https://medium.com/@mnabilarta/google-oauth-using-react-native-cli-23ce8e1cf716 
+ * for the Google oauth sign in 
+ **/
 
-// screens
-import Login from './screens/login.js';
+import {View, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
-export default function App() {
-  const [userInfo, setUserInfo] = React.useState(null);
-  const [request,response, promptAsync] = Google.useAuthRequest({
-    androidClientId: "737955579318-q1re4v9dlp5tf7u9blh0vu1knmealk2c.apps.googleusercontent.com"
+const App = () => {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '737955579318-sv5t7ugc7qdarn71csel7gn7ust72osh.apps.googleusercontent.com',
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+    });
   });
 
-  async function handleSingInWithGoogle() {
-    await AsyncStorage.getI
-  }
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+
+      console.log(userInfo);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('User cancelled the login flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Signing in');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('Play services not available');
+      } else {
+        console.log('Some other error happened');
+        console.log(error.message);
+        console.log(error.code);
+      }
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Sign in </Text>
-      <Button title ="Google Sign In" onPress={promptAsync}></Button>
-
+    <View>
+      <Text>App</Text>
+      <GoogleSigninButton
+        style={{width: 192, height: 48, marginTop: 30}}
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={signIn}
+      />
     </View>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
