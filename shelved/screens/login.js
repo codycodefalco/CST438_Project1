@@ -13,7 +13,7 @@ const Login = () => {
         <StyledContainer>
             <StatusBar style="dark"/>
             <InnerContainer>
-                <PageLogo resizeMode="cover" source={require('./../assets/img/favicon.png')}/>
+                <PageLogo resizeMode="cover" source={require('./../assets/favicon.png')}/>
                 <PageTitle> Shelved </PageTitle> 
             </InnerContainer>
         </StyledContainer>
