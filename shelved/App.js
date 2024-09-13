@@ -7,11 +7,16 @@
 
 import {View, Text} from 'react-native';
 import React, {useEffect} from 'react';
+import * as SQLite from 'expo-sqlite';
 import {
   GoogleSignin,
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+
+
+const db = SQLite.openDatabase('ReadingAppDB');
+
 
 const App = () => {
   useEffect(() => {
@@ -21,14 +26,41 @@ const App = () => {
       offlineAccess: true,
       forceCodeForRefreshToken: true,
     });
+  
+
+  db.transaction(tx => {
+    tx.executeSql(`
+      CREATE TABLE IF NOT EXISTS User(
+      id INTEGER PRIMARY KEY NOT NULL,
+      userName TEXT NOT NULL,
+      email TEXT NOT NULL,
+      googleId TEXT NOT NULL UNIQUE,
+      );
+      `);
   });
+},[]);
+
 
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
 
+      const{id,name,email} = userInfo.signIn()
       console.log(userInfo);
+
+      db.transaction(tx => {
+        tx.executeSql(
+          `INSERT OR IGNORE INTO User (userName, email, googleId) VALUES (?,?.?)`,
+          [name,email,id],
+          (tx, results) => {
+            console.log('Success', result)
+          }
+          (tx,error) => {
+            console.log('Error',error)
+          }
+        )
+      })
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('User cancelled the login flow');
